@@ -1,12 +1,34 @@
-# React + Vite
+# Card Games
+![MIT License](https://img.shields.io/badge/license-MIT-blue)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+This is a practive React project to familiarize myself with react
 
-Currently, two official plugins are available:
+## Usage
+Only current usage is to install and run on local machine. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Install
+### Prerequisites
+- Node.js: Version 18 or higher. Download and install from [nodejs.org](nodejs.org)
+- npm: Included with Node.js. Verify with npm --version.
+- Git: Optional, for cloning the repository. Install grom [git.scm.com](git.scm.com)
 
-## Expanding the ESLint configuration
+### Steps
+1. Clone the Repository (if applicable):
+    -       git clone https://github.com/cgwol/Card-Games.git
+    - If you have the project files locally, navigate to the project directory
+2. Install Dependencies:
+    - Install the required Node.js packages using npm
+    -       npm install
+3. Start the Development Server
+    - Run the Vite devleopment server:
+    -       npm run dev
+    - Vite will start the server, typically at [http://localhost:5173](http://localhost:5173). The terminal will display the exact URL.
+4. Open the Application:
+    - Open a web browser and navigate to [http://localhost:5173](http://localhost:5173) to access the site
+    - If the port differs (e.g., due to conflicts), check the terminal output for the correct URL.
+5. Play Games!
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Current Games
+- War
+
