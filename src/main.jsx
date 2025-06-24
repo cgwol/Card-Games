@@ -22,6 +22,10 @@ const router = createBrowserRouter([
         path: '/war',
         element: <War />,
       },
+      {
+        path: 'error',
+        element:<Error/>
+      },
     ],
   },
 ]);

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import logo from '../assets/templogo.png'
 
 const Error = () => {
 
-    const [countdown, setCountdown] = useState(30);
+    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -11,7 +11,7 @@ const Error = () => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [])
+    }, []);
 
     useEffect(() => {
         if(countdown == 0){
@@ -20,15 +20,20 @@ const Error = () => {
         }
     }, [countdown]);
 
+    useEffect(()=> {
+        document.body.style.overflow = 'hidden';
+    }, []);
+
     const handleButtonClick = () =>{
         window.location.assign('/');
     };
 
     return(
-        <div className="error-con">
-            <h1 className="error-h1">Oops something went wrong</h1>
-            <p className="error-p">Redirecting to the Homepage in {countdown}</p>
-            <button onClick={handleButtonClick}>Goto Homepage</button>
+        <div className="d-flex flex-column align-items-center justify-content-center vh-100 mb-3">
+            <img className="bi me-2" width={256} height={256} role="img" aria-label="cg" src={logo} alt="logo" />
+            <h1 className="mb-3">Oops something went wrong</h1>
+            <p className="">Redirecting to the Homepage in {countdown}</p>
+            <button className="btn btn-primary btn-lg" onClick={handleButtonClick}>Homepage</button>
         </div>
     )
 }
