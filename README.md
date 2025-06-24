@@ -2,7 +2,7 @@
 ![MIT License](https://img.shields.io/badge/license-MIT-blue)
 
 ## Description
-This is a practive React project to familiarize myself with react
+This is a practice React project to familiarize myself with react and vite.
 
 ## Usage
 Only current usage is to install and run on local machine. 
