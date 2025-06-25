@@ -50,7 +50,7 @@ export const startGame = (bet) => {
             dealerHand,
             status,
             isBust: false,
-            isBlackJack: true, 
+            isBlackJack: true,
             isGameStarted: true,
             isGameEnded: true,
         };
@@ -63,7 +63,7 @@ export const startGame = (bet) => {
         bet: bet,
         status: status,
         isBust: false,
-        isBlackJack: false, 
+        isBlackJack: false,
         isGameStarted: true,
         isGameEnded: false,
     }
@@ -92,10 +92,10 @@ export const hitBlackJack = (state) => {
     const newDeck = [...deck];
     const newPlayerHand = [...playerHand, newDeck.shift()];
 
-    console.log(newPlayerHand)
+    // console.log(newPlayerHand)
 
     const playerValue = getHandValue(newPlayerHand);
-    console.log(playerValue)
+    // console.log(playerValue)
 
     if (playerValue > 21) {
         return {
@@ -108,7 +108,7 @@ export const hitBlackJack = (state) => {
         };
     }
 
-    if (playerValue === 21){
+    if (playerValue === 21) {
         return {
             ...state,
             deck: newDeck,
@@ -119,11 +119,11 @@ export const hitBlackJack = (state) => {
         };
     }
 
-      return {
-    ...state,
-    deck: newDeck,
-    playerHand: newPlayerHand,
-    status: [{ text: 'Hit again or Stand?', color: 'black' }],
-    isGameEnded: false,
-  };
+    return {
+        ...state,
+        deck: newDeck,
+        playerHand: newPlayerHand,
+        status: [{ text: 'Hit again or Stand?', color: 'black' }],
+        isGameEnded: false,
+    };
 }
