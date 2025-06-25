@@ -7,6 +7,7 @@ import App from './App.jsx';
 import War from './pages/War.jsx';
 import Error from './pages/Error.jsx';
 import Homepage from './pages/Homepage.jsx';
+import Blackjack from './pages/Blackjack.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: '/war',
         element: <War />,
+      },
+      {
+        path: '/blackjack',
+        element: <Blackjack/>,
       },
       {
         path: 'error',

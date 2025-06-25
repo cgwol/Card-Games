@@ -16,7 +16,7 @@ export default function Header() {
                             <NavLink to="/war" className={({isActive}) => `nav-link px-2 ${isActive ? 'text-secondary' : 'text-white'}`}>War</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/error" className={({isActive}) => `nav-link px-2 ${isActive ? 'text-secondary' : 'text-white'}`}>Placeholder</NavLink>
+                            <NavLink to="/blackjack" className={({isActive}) => `nav-link px-2 ${isActive ? 'text-secondary' : 'text-white'}`}>Blackjack</NavLink>
                         </li>
                         <li>
                             <NavLink to="/error" className={({isActive}) => `nav-link px-2 ${isActive ? 'text-secondary' : 'text-white'}`}>Placeholder</NavLink>
