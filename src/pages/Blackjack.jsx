@@ -1,9 +1,26 @@
+import { useState } from 'react';
 import { startGame } from '../utils/blackjack.js'
+import cardBack from '../assets/card-back2.jpg'
 
 startGame()
 
 
 export default function Blackjack() {
+
+    const [gameState, setGameState] = useState({
+        dealerHand: [],
+        playerHand: [],
+        deck: [],
+        bet: 0,
+        status: [{ text: 'Get to 21!', color: 'black' }],
+        isGameStarted: false,
+        isGameEnded: false,
+
+    });
+
+    const handleStartGame = () => {
+        setGameState(startGame())
+    }
 
     return (
         <div className='d-flex flex-column align-items-center mt-5'>
@@ -15,10 +32,16 @@ export default function Blackjack() {
                 <div className='d-flex flex-row justify-content-center' id='dealer'>
 
                     <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
-
+                        {
+                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
+                                : <h5 className='text-center' style={{ color: `${gameState.dealerHand[0].color}` }}>{gameState.dealerHand[0].rank}{gameState.dealerHand[0].suit}</h5>
+                        }
                     </div>
                     <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
-
+                        {
+                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
+                                : <h5 className='text-center' style={{ color: `${gameState.dealerHand[1].color}` }}>{gameState.dealerHand[1].rank}{gameState.dealerHand[1].suit}</h5>
+                        }
                     </div>
 
 
@@ -28,10 +51,16 @@ export default function Blackjack() {
                 <div className='d-flex flex-row justify-content-center' id='dealer'>
 
                     <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
-
+                        {
+                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
+                                : <h5 className='text-center' style={{ color: `${gameState.playerHand[0].color}` }}>{gameState.playerHand[0].rank}{gameState.playerHand[0].suit}</h5>
+                        }
                     </div>
                     <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
-
+                        {
+                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
+                                : <h5 className='text-center' style={{ color: `${gameState.playerHand[1].color}` }}>{gameState.playerHand[1].rank}{gameState.playerHand[1].suit}</h5>
+                        }
                     </div>
 
 
@@ -44,7 +73,7 @@ export default function Blackjack() {
                         <div className='input-group-append'>
                             <button
                                 id='start-game'
-                                onClick={{}}
+                                onClick={handleStartGame}
                                 className='btn btn-primary btn-lg'
                                 type='button'
                             >Bet
@@ -54,7 +83,7 @@ export default function Blackjack() {
 
                     <button
                         id='hit-button'
-                        onClick={{}}
+                        // onClick={}
                         className='btn btn-warning btn-lg'
                         style={{ width: '90px' }}
                         type='button'
@@ -63,7 +92,7 @@ export default function Blackjack() {
 
                     <button
                         id='stand-button'
-                        onClick={{}}
+                        // onClick={}
                         className='btn btn-secondary btn-lg'
                         style={{ width: '90px' }}
                         type='button'
@@ -71,6 +100,15 @@ export default function Blackjack() {
                     </button>
 
 
+                </div>
+                <div className="mt-4 text-center" id="status">
+                    <h5 aria-live="polite">
+                        {gameState.status.map((part, index) => (
+                            <span key={index} style={part.color ? { color: part.color } : {}}>
+                                {part.text}
+                            </span>
+                        ))}
+                    </h5>
                 </div>
 
             </div>

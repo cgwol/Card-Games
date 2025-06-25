@@ -23,7 +23,7 @@ export const getHandValue = (hand) =>{
     return value;
 }
 
-export const startGame = () => {
+export const startGame = (bet) => {
     let deck = createDeck();
     deck = shuffleDeck(deck);
     let data = dealCards(deck)
@@ -39,6 +39,16 @@ export const startGame = () => {
     // console.log(deck)
 
     console.log(getHandValue(playerHand))
+
+    return {
+        dealerHand: dealerHand,
+        playerHand: playerHand,
+        deck: deck,
+        bet: bet,
+        status: [{ text: 'Game started', color: 'black' }],
+        isGameStarted: true,
+        isGameEnded: false,
+    }
 
 }
 
