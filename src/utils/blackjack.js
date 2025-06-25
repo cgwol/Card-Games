@@ -90,7 +90,8 @@ export const hitBlackJack = (state) => {
 
     console.log(newPlayerHand)
 
-    const playerValue = getHandValue(playerHand);
+    const playerValue = getHandValue(newPlayerHand);
+    console.log(playerValue)
 
     if (playerValue > 21) {
         return {

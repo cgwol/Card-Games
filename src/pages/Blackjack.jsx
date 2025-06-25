@@ -55,7 +55,6 @@ export default function Blackjack() {
                 <div className='d-flex flex-row justify-content-center' id='player'>
                     {
                         gameState.playerHand.map((card, index) => (
-
                             gameState.isGameStarted ?
                                 (<div
                                     key={index}
@@ -74,7 +73,6 @@ export default function Blackjack() {
                                 >
                                     <img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />
                                 </div>)
-
                         ))
                     }
 
@@ -82,9 +80,16 @@ export default function Blackjack() {
 
                 <div className='d-flex flex-row justify-content-center mt-5'>
 
-                    <div className='input-group' style={{ width: '180px' }}>
-                        <input type="text" className='form-control' placeholder='credits' aria-label='credits' />
-                        <div className='input-group-append'>
+                    <div className='input-group'
+                        style={{ width: gameState.isGameStarted ? '0px' : '180px' }}>
+                        <input type="text"
+                            className='form-control'
+                            placeholder='credits'
+                            aria-label='credits'
+                            style={{ display: gameState.isGameStarted  ? 'none' : 'inline-block' }}
+                        />
+                        <div className='input-group-append'
+                            style={{ display: gameState.isGameStarted ? 'none' : 'inline-block' }}>
                             <button
                                 id='start-game'
                                 onClick={handleStartGame}
@@ -99,7 +104,7 @@ export default function Blackjack() {
                         id='hit-button'
                         onClick={handleHit}
                         className='btn btn-warning btn-lg'
-                        style={{ width: '90px' }}
+                        style={{ width: '90px', display: gameState.isGameStarted ? 'inline-block' : 'none' }}
                         type='button'
                     >Hit
                     </button>
@@ -108,7 +113,7 @@ export default function Blackjack() {
                         id='stand-button'
                         // onClick={}
                         className='btn btn-secondary btn-lg'
-                        style={{ width: '90px' }}
+                        style={{ width: '90px', display: gameState.isGameStarted ? 'inline-block' : 'none' }}
                         type='button'
                     >Stand
                     </button>
