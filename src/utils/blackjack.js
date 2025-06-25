@@ -1,9 +1,26 @@
 import { createDeck, shuffleDeck} from '../utils/deck.js'
 
 export const getHandValue = (hand) =>{
-    hand = [];
+    let value = 0;
+    let aces = 0;
+    for(const card of hand){
+        if(card.rank === 'A'){
+            aces+=1;
+        } else if(['J','Q','K'].includes(card.rank)){
+            value += 10;
+        } else {
+            value += parseInt(card.rank);
+        }
+    }
+    for (let i = 0; i < aces; i++){
+        if(value + 11 <= 21){
+            value += 11;
+        } else {
+            value += 1;
+        }
+    }
 
-    return hand;
+    return value;
 }
 
 export const startGame = () => {
@@ -19,7 +36,9 @@ export const startGame = () => {
 
     console.log(playerHand)
     console.log(dealerHand)
-    console.log(deck)
+    // console.log(deck)
+
+    console.log(getHandValue(playerHand))
 
 }
 
