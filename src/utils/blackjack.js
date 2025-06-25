@@ -1,19 +1,19 @@
-import { createDeck, shuffleDeck} from '../utils/deck.js'
+import { createDeck, shuffleDeck } from '../utils/deck.js'
 
-export const getHandValue = (hand) =>{
+export const getHandValue = (hand) => {
     let value = 0;
     let aces = 0;
-    for(const card of hand){
-        if(card.rank === 'A'){
-            aces+=1;
-        } else if(['J','Q','K'].includes(card.rank)){
+    for (const card of hand) {
+        if (card.rank === 'A') {
+            aces += 1;
+        } else if (['J', 'Q', 'K'].includes(card.rank)) {
             value += 10;
         } else {
             value += parseInt(card.rank);
         }
     }
-    for (let i = 0; i < aces; i++){
-        if(value + 11 <= 21){
+    for (let i = 0; i < aces; i++) {
+        if (value + 11 <= 21) {
             value += 11;
         } else {
             value += 1;
@@ -34,18 +34,32 @@ export const startGame = (bet) => {
     let dealerHand = data.dealerHand;
     deck = data.deck;
 
-    console.log(playerHand)
-    console.log(dealerHand)
+    let status = [{ text: 'Game started! Hit or Stand?', color: 'black' }]
+
+    // console.log(playerHand)
+    // console.log(dealerHand)
     // console.log(deck)
 
-    console.log(getHandValue(playerHand))
+    const playerValue = getHandValue(playerHand);
+
+    if (playerValue === 21) {
+        status = [{ text: 'Blackjack! Player wins!', color: 'black' }]
+        return {
+            deck,
+            playerHand,
+            dealerHand,
+            status,
+            isGameStarted: true,
+            isGameEnded: true,
+        };
+    }
 
     return {
         dealerHand: dealerHand,
         playerHand: playerHand,
         deck: deck,
         bet: bet,
-        status: [{ text: 'Game started', color: 'black' }],
+        status: status,
         isGameStarted: true,
         isGameEnded: false,
     }
@@ -56,15 +70,44 @@ export const dealCards = (deck) => {
     let playerHand = [];
     let dealerHand = [];
 
-    for(let i = 0; i < 2; i++){
+    for (let i = 0; i < 2; i++) {
         playerHand[i] = deck.shift();
     }
 
-    for(let i = 0; i < 2; i++){
+    for (let i = 0; i < 2; i++) {
         dealerHand[i] = deck.shift();
     }
 
-    return {playerHand, dealerHand, deck} 
+    return { playerHand, dealerHand, deck }
 
 }
 
+export const hitBlackJack = (state) => {
+    const { deck, playerHand } = state;
+
+    const newDeck = [...deck];
+    const newPlayerHand = [...playerHand, newDeck.shift()];
+
+    console.log(newPlayerHand)
+
+    const playerValue = getHandValue(playerHand);
+
+    if (playerValue > 21) {
+        return {
+            ...state,
+            deck: newDeck,
+            playerHand: newPlayerHand,
+            status: [{ text: 'Bust! Dealer wins!', color: 'black' }],
+            isGameOver: true,
+        };
+
+    }
+
+      return {
+    ...state,
+    deck: newDeck,
+    playerHand: newPlayerHand,
+    status: [{ text: 'Hit again or Stand?', color: 'black' }],
+    isGameOver: false,
+  };
+}

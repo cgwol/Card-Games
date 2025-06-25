@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { startGame } from '../utils/blackjack.js'
+import { startGame, hitBlackJack } from '../utils/blackjack.js'
 import cardBack from '../assets/card-back2.jpg'
 
 startGame()
@@ -9,7 +9,7 @@ export default function Blackjack() {
 
     const [gameState, setGameState] = useState({
         dealerHand: [],
-        playerHand: [],
+        playerHand: ['placeholder', 'placeholder'],
         deck: [],
         bet: 0,
         status: [{ text: 'Get to 21!', color: 'black' }],
@@ -22,6 +22,10 @@ export default function Blackjack() {
         setGameState(startGame())
     }
 
+    const handleHit = () => {
+        setGameState(hitBlackJack(gameState))
+    }
+
     return (
         <div className='d-flex flex-column align-items-center mt-5'>
             <h1 className="fw-bold">Blackjack</h1>
@@ -31,13 +35,13 @@ export default function Blackjack() {
                 <h3 className='text-center'>Dealer's Hand</h3>
                 <div className='d-flex flex-row justify-content-center' id='dealer'>
 
-                    <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
+                    <div className='card justify-content-center border-2 ms-1 me-1' style={{ width: '160px', height: '224px' }}>
                         {
                             !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
                                 : <h5 className='text-center' style={{ color: `${gameState.dealerHand[0].color}` }}>{gameState.dealerHand[0].rank}{gameState.dealerHand[0].suit}</h5>
                         }
                     </div>
-                    <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
+                    <div className='card justify-content-center border-2 ms-1 me-1' style={{ width: '160px', height: '224px' }}>
                         {
                             !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
                                 : <h5 className='text-center' style={{ color: `${gameState.dealerHand[1].color}` }}>{gameState.dealerHand[1].rank}{gameState.dealerHand[1].suit}</h5>
@@ -48,21 +52,31 @@ export default function Blackjack() {
                 </div>
 
                 <h3 className='text-center mt-5'>Player's Hand</h3>
-                <div className='d-flex flex-row justify-content-center' id='dealer'>
+                <div className='d-flex flex-row justify-content-center' id='player'>
+                    {
+                        gameState.playerHand.map((card, index) => (
 
-                    <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
-                        {
-                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
-                                : <h5 className='text-center' style={{ color: `${gameState.playerHand[0].color}` }}>{gameState.playerHand[0].rank}{gameState.playerHand[0].suit}</h5>
-                        }
-                    </div>
-                    <div className='card justify-content-center border-2' style={{ width: '160px', height: '224px' }}>
-                        {
-                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
-                                : <h5 className='text-center' style={{ color: `${gameState.playerHand[1].color}` }}>{gameState.playerHand[1].rank}{gameState.playerHand[1].suit}</h5>
-                        }
-                    </div>
+                            gameState.isGameStarted ?
+                                (<div
+                                    key={index}
+                                    className='card justify-content-center border-2 ms-1 me-1'
+                                    style={{ width: '160px', height: '224px' }}
+                                >
+                                    <h5 className="text-center" style={{ color: card.color }}>
+                                        {card.rank}{card.suit}
+                                    </h5>
+                                </div>)
+                                :
+                                (<div
+                                    key={index}
+                                    className='card justify-content-center border-2 ms-1 me-1'
+                                    style={{ width: '160px', height: '224px' }}
+                                >
+                                    <img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />
+                                </div>)
 
+                        ))
+                    }
 
                 </div>
 
@@ -83,7 +97,7 @@ export default function Blackjack() {
 
                     <button
                         id='hit-button'
-                        // onClick={}
+                        onClick={handleHit}
                         className='btn btn-warning btn-lg'
                         style={{ width: '90px' }}
                         type='button'
