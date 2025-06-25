@@ -1,27 +1,23 @@
-import { createDeck, shuffleDeck, splitDeck, getCardValue} from '../utils/deck.js'
+import { createDeck, shuffleDeck, splitDeck, getCardValue } from '../utils/deck.js'
 
-export const startGame = () =>{
+export const startGame = () => {
     console.log('Game Starting')
     let deck = [];
     deck = createDeck();
     deck = shuffleDeck(deck);
 
     const splitDeckArray = splitDeck(deck)
-    // let { playerDeck, computerDeck } = splitDeck(deck);
     let playerDeck = splitDeckArray[0]
     let computerDeck = splitDeckArray[1]
 
-    // console.log(playerDeck);
-    // console.log(computerDeck);
-
-    return{
+    return {
         playerDeck,
         computerDeck,
         playerCard: '?',
         computerCard: '?',
         warCards: [],
         roundCount: 0,
-        status: 'Game started! Click "Play Round!" to start!',
+        status: [{ text: 'Game started! Click "Play round!"', color: 'black' }],
         isGameStarted: true,
         isWar: false,
         isGameOver: false,
@@ -30,12 +26,12 @@ export const startGame = () =>{
 };
 
 export const playRound = (state) => {
-    const  { playerDeck, computerDeck, warCards, roundCount } = state;
+    const { playerDeck, computerDeck, warCards, roundCount } = state;
 
-    if(playerDeck.length < 1 || computerDeck.length < 1) {
-        return{
+    if (playerDeck.length < 1 || computerDeck.length < 1) {
+        return {
             ...state,
-            status: playerDeck.length < 1 ? 'Computer wins the game!' : 'Player wins the game!',
+            status: [{ text: playerDeck.length < 1 ? 'Computer wins the game!' : 'Player wins the game!', color: 'black' }],
             isGameOver: true,
             isGameEnded: false,
         }
@@ -47,7 +43,8 @@ export const playRound = (state) => {
     const computerCard = newComputerDeck.shift();
     const newWarCards = [...warCards, playerCard, computerCard]
 
-    // console.log(newWarCards)
+    console.log(playerCard);
+    console.log(playerCard.color)
 
     let status = '';
     let isWar = false;
@@ -55,24 +52,39 @@ export const playRound = (state) => {
     let playerValue = getCardValue(playerCard);
     let computerValue = getCardValue(computerCard);
 
-    if(playerValue > computerValue){
-        status = `Player wins round! ${playerCard.rank}${playerCard.suit} beats ${computerCard.rank}${computerCard.suit}`
+    if (playerValue > computerValue) {
+        status = [
+            { text: 'Player wins round! ', color: 'black' },
+            { text: `${playerCard.rank}${playerCard.suit}`, color: playerCard.color },
+            { text: ' beats ', color: 'black' },
+            { text: `${computerCard.rank}${computerCard.suit}`, color: computerCard.color },
+        ];
         newPlayerDeck.push(...newWarCards);
     }
-    else if(playerValue < computerValue){
-        status = `Computer wins round! ${computerCard.rank}${computerCard.suit} beats ${playerCard.rank}${playerCard.suit}`
+    else if (playerValue < computerValue) {
+        status = [
+            { text: 'Computer wins round! ', color: 'black' },
+            { text: `${computerCard.rank}${computerCard.suit}`, color: computerCard.color },
+            { text: ' beats ', color: 'black' },
+            { text: `${playerCard.rank}${playerCard.suit}`, color: playerCard.color },
+        ];
         newComputerDeck.push(...newWarCards);
     }
-    else{
-        status = `WAR! ${playerCard.rank}${playerCard.suit} ties ${computerCard.rank}${computerCard.suit}`;
+    else {
+        status = [
+            { text: 'WAR! ', color: 'black' },
+            { text: `${playerCard.rank}${playerCard.suit}`, color: playerCard.color },
+            { text: ' ties ', color: 'black' },
+            { text: `${computerCard.rank}${computerCard.suit}`, color: computerCard.color },
+        ];
         isWar = true;
     }
 
-    return{
+    return {
         playerDeck: newPlayerDeck,
         computerDeck: newComputerDeck,
-        playerCard: `${playerCard.rank}${playerCard.suit}`,
-        computerCard: `${computerCard.rank}${computerCard.suit}`,
+        playerCard: playerCard,
+        computerCard: computerCard,
         warCards: isWar ? newWarCards : [],
         roundCount: roundCount + 1,
         status: status,
@@ -85,11 +97,11 @@ export const playRound = (state) => {
 export const playWar = (state) => {
 
     console.log('Starting War')
-    const  { playerDeck, computerDeck, warCards, roundCount } = state;
-    if(playerDeck.length < 1 || computerDeck.length < 1) {
-        return{
+    const { playerDeck, computerDeck, warCards, roundCount } = state;
+    if (playerDeck.length < 1 || computerDeck.length < 1) {
+        return {
             ...state,
-            status: playerDeck.length < 1 ? 'Computer wins the game!' : 'Player wins the game!',
+            status: [{ text: playerDeck.length < 1 ? 'Computer wins the game!' : 'Player wins the game!', color: 'black' }],
             isGameOver: true,
             isGameEnded: false,
         }
@@ -101,32 +113,45 @@ export const playWar = (state) => {
     const computerCard = newComputerDeck.shift();
     const newWarCards = [...warCards, playerCard, computerCard];
 
-    // console.log(newWarCards);
-
     let status = '';
     let isWar = false;
 
     let playerValue = getCardValue(playerCard);
     let computerValue = getCardValue(computerCard);
 
-    if(playerValue > computerValue){
-        status = `Player wins the War! ${playerCard.rank}${playerCard.suit} beats ${computerCard.rank}${computerCard.suit}`
+    if (playerValue > computerValue) {
+        status = [
+            { text: 'Player wins the WAR! ', color: 'black' },
+            { text: `${playerCard.rank}${playerCard.suit}`, color: playerCard.color },
+            { text: ' beats ', color: 'black' },
+            { text: `${computerCard.rank}${computerCard.suit}`, color: computerCard.color },
+        ];
         newPlayerDeck.push(...newWarCards);
     }
-    else if(playerValue < computerValue){
-        status = `Computer wins the War! ${computerCard.rank}${computerCard.suit} beats ${playerCard.rank}${playerCard.suit}`
+    else if (playerValue < computerValue) {
+        status = [
+            { text: 'Computer wins the WAR! ', color: 'black' },
+            { text: `${computerCard.rank}${computerCard.suit}`, color: computerCard.color },
+            { text: ' beats ', color: 'black' },
+            { text: `${playerCard.rank}${playerCard.suit}`, color: playerCard.color },
+        ];
         newComputerDeck.push(...newWarCards);
     }
-    else{
-        status = `ANOTHER WAR! ${playerCard.rank}${playerCard.suit} ties ${computerCard.rank}${computerCard.suit}`;
+    else {
+        status = [
+            { text: 'ANOTHER WAR! ', color: 'black' },
+            { text: `${playerCard.rank}${playerCard.suit}`, color: playerCard.color },
+            { text: ' ties ', color: 'black' },
+            { text: `${computerCard.rank}${computerCard.suit}`, color: computerCard.color },
+        ];
         isWar = true;
     }
 
-    return{
+    return {
         playerDeck: newPlayerDeck,
         computerDeck: newComputerDeck,
-        playerCard: `${playerCard.rank}${playerCard.suit}`,
-        computerCard: `${computerCard.rank}${computerCard.suit}`,
+        playerCard: playerCard,
+        computerCard: computerCard,
         warCards: isWar ? newWarCards : [],
         roundCount,
         status: status,
@@ -136,17 +161,17 @@ export const playWar = (state) => {
     };
 }
 
-export const endgame = (state) =>{
+export const endgame = (state) => {
 
     const message = state.playerDeck.length === 0 ? 'Computer wins the game! Play Again?' : 'Player wins the game! Play again?'
-    return{
+    return {
         playerDeck: [],
         computerDeck: [],
-        playerCard: '?',
-        computerCard: '?',
+        playerCard: '',
+        computerCard: '',
         warCards: [],
         roundCount: 0,
-        status: message,
+        status: [{ text: message, color: 'black' }],
         isGameStarted: false,
         isWar: false,
         isGameOver: true,
