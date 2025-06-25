@@ -1,15 +1,23 @@
-const suits = ['♠', '♥', '♦', '♣'];
+const suits = ['♥', '♦', '♣', '♠'];
 const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
 export const createDeck = () => {
     let deck = [];
     for(let i = 0; i < suits.length; i++){
         for(let j = 0; j < ranks.length; j++){
+            let color = '';
+            if(i > 1){
+                color = 'black';
+            } else {
+                color = 'red';
+            }
             let card = {
                 suit: suits[i],
-                rank: ranks[j]
+                rank: ranks[j],
+                color: color,
             };
             deck.push(card)
+            console.log(card)
         }
     }
     return deck;

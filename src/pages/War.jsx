@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { startGame, playRound, playWar, endgame, getCardCount } from '../utils/war.js'
+import cardBack from '../assets/card-back2.jpg'
 
 export default function War() {
 
     const [gameState, setGameState] = useState({
         playerDeck: [],
         computerDeck: [],
-        playerCard: '?',
-        computerCard: '?',
+        playerCard: '',
+        computerCard: '',
         warCards: [],
         roundCount: 0,
-        status: 'Click "Play WAR!" to start!',
+        status: [{ text: 'Click "Play WAR!" to start', color: 'black' }],
         isGameStarted: false,
         isWar: false,
         isGameOver: false,
@@ -43,16 +44,22 @@ export default function War() {
 
                 <div className="d-flex flex-column" id="player">
                     <h3 className="text-center">Player</h3>
-                    <div className="card justify-content-center" style={{ width: '160px', height: '224px' }}>
-                        <h5 className="text-center " id="player-card">{gameState.playerCard}</h5>
+                    <div className="card justify-content-center border-2" style={{ width: '160px', height: '224px' }}>
+                        {
+                            gameState.roundCount < 1 ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
+                                : <h5 className="text-center" id="player-card" style={{ color: `${gameState.playerCard.color}` }}>{gameState.playerCard.rank}{gameState.playerCard.suit}</h5>
+                        }
                     </div>
                     <p className="text-center mt-2">Cards left: <span id="player-card-count">{playerCardCount}</span></p>
                 </div>
 
                 <div className="d-flex flex-column" id="computer">
                     <h3 className="text-center">Computer</h3>
-                    <div className="card justify-content-center" style={{ width: '160px', height: '224px' }}>
-                        <h5 className="text-center" id="computer-card">{gameState.computerCard}</h5>
+                    <div className="card justify-content-center border-2" style={{ width: '160px', height: '224px' }}>
+                        {
+                            gameState.roundCount < 1 ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
+                                : <h5 className="text-center" id="computer-card" style={{ color: `${gameState.computerCard.color}` }}>{gameState.computerCard.rank}{gameState.computerCard.suit}</h5>
+                        }
                     </div>
                     <p className=" text-center mt-2">Cards left: <span id="computer-card-count"></span>{computerCardCount}</p>
                 </div>
@@ -97,9 +104,13 @@ export default function War() {
             </div>
 
             <div className="mt-4" id="status">
-
-                <h5>{gameState.status}</h5>
-
+                <h5 aria-live="polite">
+                    {gameState.status.map((part, index) => (
+                        <span key={index} style={part.color ? { color: part.color } : {}}>
+                            {part.text}
+                        </span>
+                    ))}
+                </h5>
             </div>
         </div>
     )
