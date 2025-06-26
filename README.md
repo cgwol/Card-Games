@@ -31,4 +31,4 @@ Only current usage is to install and run on local machine.
 
 ## Current Games
 - War
-
+- Blackjack
