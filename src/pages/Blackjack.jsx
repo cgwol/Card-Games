@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { startGame, hitBlackJack } from '../utils/blackjack.js'
+import { startGame, hitBlackJack, standBlackJack } from '../utils/blackjack.js'
 import cardBack from '../assets/card-back2.jpg'
 
 startGame()
@@ -8,13 +8,11 @@ startGame()
 export default function Blackjack() {
 
     const [gameState, setGameState] = useState({
-        dealerHand: [],
+        dealerHand: ['placeholder', 'placeholder'],
         playerHand: ['placeholder', 'placeholder'],
         deck: [],
         bet: 0,
         status: [{ text: 'Get to 21!', color: 'black' }],
-        isBust: false,
-        isBlackJack: false,
         isGameStarted: false,
         isGameEnded: false,
 
@@ -28,6 +26,10 @@ export default function Blackjack() {
         setGameState(hitBlackJack(gameState))
     }
 
+    const handleStand = () => {
+        setGameState(standBlackJack(gameState))
+    }
+
     // console.log(gameState)
 
     return (
@@ -39,18 +41,33 @@ export default function Blackjack() {
                 <h3 className='text-center'>Dealer's Hand</h3>
                 <div className='d-flex flex-row justify-content-center' id='dealer'>
 
-                    <div className='card justify-content-center border-2 ms-1 me-1' style={{ width: '160px', height: '224px' }}>
-                        {
-                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
-                                : <h5 className='text-center' style={{ color: `${gameState.dealerHand[0].color}` }}>{gameState.dealerHand[0].rank}{gameState.dealerHand[0].suit}</h5>
-                        }
-                    </div>
-                    <div className='card justify-content-center border-2 ms-1 me-1' style={{ width: '160px', height: '224px' }}>
-                        {
-                            !gameState.isGameStarted ? (<img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />)
-                                : <h5 className='text-center' style={{ color: `${gameState.dealerHand[1].color}` }}>{gameState.dealerHand[1].rank}{gameState.dealerHand[1].suit}</h5>
-                        }
-                    </div>
+                    {
+                        gameState.dealerHand.map((card, index) => (
+                            gameState.isGameStarted ?
+                                (<div
+                                    key={index}
+                                    className='card justify-content-center border-2 ms-1 me-1'
+                                    style={{ width: '160px', height: '224px' }}
+                                >
+                                    {gameState.isGameStarted && (index === 0 || gameState.isGameEnded) && card !== 'placeholder' ? (
+                                        <h5 className="text-center" style={{ color: card.color }}>
+                                            {card.rank}{card.suit}
+                                        </h5>
+                                    ) : (
+                                        <img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />
+                                    )}
+                                </div>)
+
+                                :
+                                (<div
+                                    key={index}
+                                    className='card justify-content-center border-2 ms-1 me-1'
+                                    style={{ width: '160px', height: '224px' }}
+                                >
+                                    <img className="card-img" src={cardBack} alt="logo" style={{ width: '160px', height: '224px', objectFit: 'cover' }} />
+                                </div>)
+                        ))
+                    }
 
 
                 </div>
@@ -85,15 +102,15 @@ export default function Blackjack() {
                 <div className='d-flex flex-row justify-content-center mt-5'>
 
                     <div className='input-group'
-                        style={{ width: !gameState.isGameStarted || gameState.isBust || gameState.isBlackJack ? '180px' : '0px' }}>
+                        style={{ width: !gameState.isGameStarted || gameState.isGameEnded ? '180px' : '0px' }}>
                         <input type="text"
                             className='form-control'
                             placeholder='credits'
                             aria-label='credits'
-                            style={{ display: !gameState.isGameStarted || gameState.isBust || gameState.isBlackJack  ? 'inline-block' : 'none' }}
+                            style={{ display: !gameState.isGameStarted || gameState.isGameEnded ? 'inline-block' : 'none' }}
                         />
                         <div className='input-group-append'
-                            style={{ display: !gameState.isGameStarted || gameState.isBust || gameState.isBlackJack  ? 'inline-block' : 'none' }}>
+                            style={{ display: !gameState.isGameStarted || gameState.isGameEnded ? 'inline-block' : 'none' }}>
                             <button
                                 id='start-game'
                                 onClick={handleStartGame}
@@ -108,16 +125,16 @@ export default function Blackjack() {
                         id='hit-button'
                         onClick={handleHit}
                         className='btn btn-warning btn-lg'
-                        style={{ width: '90px', display: !gameState.isGameStarted || gameState.isBust || gameState.isBlackJack ? 'none' : 'inline-block' }}
+                        style={{ width: '90px', display: !gameState.isGameStarted || gameState.isGameEnded ? 'none' : 'inline-block' }}
                         type='button'
                     >Hit
                     </button>
 
                     <button
                         id='stand-button'
-                        // onClick={}
+                        onClick={handleStand}
                         className='btn btn-secondary btn-lg'
-                        style={{ width: '90px', display: !gameState.isGameStarted || gameState.isBust || gameState.isBlackJack ? 'none' : 'inline-block' }}
+                        style={{ width: '90px', display: !gameState.isGameStarted || gameState.isGameEnded ? 'none' : 'inline-block' }}
                         type='button'
                     >Stand
                     </button>

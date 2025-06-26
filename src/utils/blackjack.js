@@ -49,8 +49,6 @@ export const startGame = (bet) => {
             playerHand,
             dealerHand,
             status,
-            isBust: false,
-            isBlackJack: true,
             isGameStarted: true,
             isGameEnded: true,
         };
@@ -62,8 +60,6 @@ export const startGame = (bet) => {
         deck: deck,
         bet: bet,
         status: status,
-        isBust: false,
-        isBlackJack: false,
         isGameStarted: true,
         isGameEnded: false,
     }
@@ -103,7 +99,6 @@ export const hitBlackJack = (state) => {
             deck: newDeck,
             playerHand: newPlayerHand,
             status: [{ text: 'Bust! Dealer wins!', color: 'black' }],
-            isBust: true,
             isGameEnded: true,
         };
     }
@@ -114,7 +109,6 @@ export const hitBlackJack = (state) => {
             deck: newDeck,
             playerHand: newPlayerHand,
             status: [{ text: 'Blackjack! Player wins!', color: 'black' }],
-            isBlackJack: true,
             isGameEnded: true,
         };
     }
@@ -126,4 +120,52 @@ export const hitBlackJack = (state) => {
         status: [{ text: 'Hit again or Stand?', color: 'black' }],
         isGameEnded: false,
     };
+}
+
+export const standBlackJack = (state) => {
+    const { deck, playerHand, dealerHand } = state;
+    let newDeck = [...deck];
+    let newDealerHand = [...dealerHand];
+    let dealerValue = getHandValue(newDealerHand);
+
+    while (dealerValue < 17) {
+        newDealerHand = [...newDealerHand, newDeck.shift()];
+        dealerValue = getHandValue(newDealerHand);
+    }
+    console.log(newDealerHand)
+    console.log(dealerValue)
+
+    const playerValue = getHandValue(playerHand);
+    let status = [];
+    let isGameEnded = false;
+
+    if (dealerValue > 21) {
+        status = [
+            { text: 'Dealer busts! Player wins!', color: 'black' },
+        ]
+        isGameEnded = true;
+    } else if (playerValue > dealerValue) {
+        status = [
+            { text: 'Player wins!', color: 'black' }
+        ]
+        isGameEnded = true;
+    } else if (dealerValue > playerValue) {
+        status = [
+            { text: 'Dealer wins!', color: 'black' }
+        ]
+        isGameEnded = true
+    } else {
+        status = [
+            {text: 'Push!', color: 'black'}
+        ]
+        isGameEnded = true;
+    }
+
+    return {
+        ...state,
+        deck: newDeck,
+        dealerHand: newDealerHand,
+        status: status,
+        isGameEnded,
+    }
 }
