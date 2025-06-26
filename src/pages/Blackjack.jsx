@@ -18,8 +18,18 @@ export default function Blackjack() {
 
     });
 
+    const [betInput, setBetInput] = useState('');
+
     const handleStartGame = () => {
-        setGameState(startGame())
+        const betValue = parseInt(betInput) || 0;
+        if(betValue < 0) {
+            setGameState({
+                ...gameState,
+                status:[{ text: 'Please enter a valid bet!', color: 'red'}]
+            });
+            return;
+        }
+        setGameState(startGame(betValue))
     }
 
     const handleHit = () => {
@@ -28,6 +38,10 @@ export default function Blackjack() {
 
     const handleStand = () => {
         setGameState(standBlackJack(gameState))
+    }
+    
+    const handleBetChange = (e) => {
+        setBetInput(e.target.value);
     }
 
     // console.log(gameState)
@@ -107,6 +121,8 @@ export default function Blackjack() {
                             className='form-control'
                             placeholder='credits'
                             aria-label='credits'
+                            value={betInput}
+                            onChange = {handleBetChange}
                             style={{ display: !gameState.isGameStarted || gameState.isGameEnded ? 'inline-block' : 'none' }}
                         />
                         <div className='input-group-append'

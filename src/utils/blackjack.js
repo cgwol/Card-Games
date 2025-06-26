@@ -43,12 +43,13 @@ export const startGame = (bet) => {
     const playerValue = getHandValue(playerHand);
 
     if (playerValue === 21) {
-        status = [{ text: 'Blackjack! Player wins!', color: 'black' }]
+        let message = [{ text: 'Blackjack! Player wins!', color: 'black' }];
+        message.push(...winnings(bet))
         return {
             deck,
             playerHand,
             dealerHand,
-            status,
+            status: message,
             isGameStarted: true,
             isGameEnded: true,
         };
@@ -83,7 +84,7 @@ export const dealCards = (deck) => {
 }
 
 export const hitBlackJack = (state) => {
-    const { deck, playerHand } = state;
+    const { deck, playerHand, bet } = state;
 
     const newDeck = [...deck];
     const newPlayerHand = [...playerHand, newDeck.shift()];
@@ -94,21 +95,26 @@ export const hitBlackJack = (state) => {
     // console.log(playerValue)
 
     if (playerValue > 21) {
+        let message = [{ text: 'Player busts! Dealer wins!', color: 'black' }]
+        message.push(...losses(bet));
+        
         return {
             ...state,
             deck: newDeck,
             playerHand: newPlayerHand,
-            status: [{ text: 'Bust! Dealer wins!', color: 'black' }],
+            status: message,
             isGameEnded: true,
         };
     }
 
     if (playerValue === 21) {
+        let message = [{ text: 'Blackjack! Player wins!', color: 'black' }]
+        message.push(...winnings(bet))
         return {
             ...state,
             deck: newDeck,
             playerHand: newPlayerHand,
-            status: [{ text: 'Blackjack! Player wins!', color: 'black' }],
+            status: message,
             isGameEnded: true,
         };
     }
@@ -123,7 +129,7 @@ export const hitBlackJack = (state) => {
 }
 
 export const standBlackJack = (state) => {
-    const { deck, playerHand, dealerHand } = state;
+    const { deck, playerHand, dealerHand, bet } = state;
     let newDeck = [...deck];
     let newDealerHand = [...dealerHand];
     let dealerValue = getHandValue(newDealerHand);
@@ -132,40 +138,70 @@ export const standBlackJack = (state) => {
         newDealerHand = [...newDealerHand, newDeck.shift()];
         dealerValue = getHandValue(newDealerHand);
     }
-    console.log(newDealerHand)
-    console.log(dealerValue)
+    // console.log(newDealerHand)
+    // console.log(dealerValue)
 
     const playerValue = getHandValue(playerHand);
-    let status = [];
+    let message = [];
     let isGameEnded = false;
 
     if (dealerValue > 21) {
-        status = [
+        message = [
             { text: 'Dealer busts! Player wins!', color: 'black' },
         ]
+        message.push(...winnings(bet));
         isGameEnded = true;
     } else if (playerValue > dealerValue) {
-        status = [
+        message = [
             { text: 'Player wins!', color: 'black' }
         ]
+        message.push(...winnings(bet));
         isGameEnded = true;
     } else if (dealerValue > playerValue) {
-        status = [
+        message = [
             { text: 'Dealer wins!', color: 'black' }
         ]
+        message.push(...losses(bet));
         isGameEnded = true
     } else {
-        status = [
+        message = [
             {text: 'Push!', color: 'black'}
         ]
         isGameEnded = true;
     }
 
+    // console.log(message)
+
     return {
         ...state,
         deck: newDeck,
         dealerHand: newDealerHand,
-        status: status,
+        status: message,
         isGameEnded,
     }
 }
+
+export const winnings = (bet) =>{
+    // Later usage for credits
+    let x = bet * 2;
+    let status = [
+        {text: ' Player wins ', color: 'black'},
+        {text: `${x}`, color: 'green'},
+        {text: ' credits!', color: 'black'}
+    ]
+
+    return status;
+    
+}
+
+export const losses = (bet) =>{
+    // Later usage for credits
+    let status = [
+        {text: ' Player loses ', color: 'black'},
+        {text: `${bet}`, color: 'red'},
+        {text: ' credits!', color: 'black'}
+    ]
+
+    return status;
+}
+
