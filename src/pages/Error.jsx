@@ -3,7 +3,7 @@ import logo from '../assets/templogo.png'
 
 const Error = () => {
 
-    const [countdown, setCountdown] = useState(5);
+    const [countdown, setCountdown] = useState(9999);
 
     useEffect(() => {
         const timer = setInterval(() => {

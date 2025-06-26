@@ -17,7 +17,7 @@ export const createDeck = () => {
                 color: color,
             };
             deck.push(card)
-            console.log(card)
+            // console.log(card)
         }
     }
     return deck;
